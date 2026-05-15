@@ -1,0 +1,678 @@
+# Product Requirements Document: Farm Finance Tracker
+
+## 1. Product Overview
+
+Farm Finance Tracker is a role-based financial tracking application for farming operations. It helps farm owners and teams record expenses, income, payments, labor costs, land rental, water usage, outsourced services, repairs, and other operational costs.
+
+The app provides dashboard views, reports, exports, monthly email summaries, approval workflows, and audit-friendly record archiving.
+
+## 2. Goals
+
+- Track all farm-related expenses and income in one place.
+- Support multiple farms under one admin account.
+- Categorize costs such as land rental, water, labor, outsourcing, repairs, equipment, seeds, fertilizer, and transport.
+- Record daily cost entries with notes, payment status, and approval status.
+- View dashboards with charts and tables.
+- Export reports and data to PDF, CSV, and optionally Excel.
+- Send monthly financial reports by email.
+- Support role-based access for Admin, Operator, and User.
+- Preserve deleted records through archiving for audit purposes.
+
+## 3. Currency
+
+The app will support one currency only:
+
+- Indian Rupees, INR/₹
+
+All dashboards, forms, exports, monthly reports, and calculations must use INR.
+
+## 4. User Roles
+
+### 4.1 Admin
+
+Admin has full access to the system.
+
+Admin can:
+
+- Add users.
+- Remove users.
+- Lock or unlock user access.
+- Assign roles.
+- View all farm data.
+- Manage multiple farms.
+- Add, edit, approve, reject, archive, and restore expense records.
+- Add, edit, approve, reject, archive, and restore income records.
+- Manage categories.
+- Manage farms, fields, crops, and crop seasons.
+- View dashboards and reports.
+- Export reports.
+- Configure monthly report recipients.
+- Configure water cost rates, rental terms, and other system settings.
+- View archived records.
+- View audit logs.
+
+### 4.2 Operator
+
+Operator has limited operational access.
+
+Operator can:
+
+- Add daily expense entries.
+- Add daily income entries if permitted.
+- Update payment details.
+- Upload receipts, invoices, or photos when attachments are added.
+- Edit records they created, depending on admin settings.
+- View operational dashboards relevant to their assigned work.
+
+Operator restrictions:
+
+- Cannot add or remove users.
+- Cannot lock or unlock user access.
+- Cannot change system settings.
+- Cannot approve or reject records.
+- Cannot archive or restore records unless explicitly allowed in a future setting.
+- Records created by operators require approval before becoming final.
+
+Operators do not need farm, field, or crop-level restrictions in the initial version.
+
+### 4.3 User
+
+User has view-only access to assigned data.
+
+User can:
+
+- View their specific farm, field, crop, or financial data.
+- View dashboards related to their assigned access.
+- View tables and reports.
+- Export assigned reports and permitted data.
+
+User restrictions:
+
+- Cannot add records.
+- Cannot edit records.
+- Cannot delete or archive records.
+- Cannot approve or reject records.
+- Cannot manage users or settings.
+
+## 5. Core Features
+
+## 5.1 Dashboard
+
+The dashboard should show a summary of farm finances using both graph and tabular views.
+
+Dashboard metrics should include:
+
+- Total income.
+- Total expenses.
+- Net profit or loss.
+- Pending payments.
+- Paid expenses.
+- Pending approvals.
+- Rejected entries.
+- Monthly cost trend.
+- Category-wise expense breakdown.
+- Farm-wise summary.
+- Field-wise summary.
+- Crop season-wise profitability.
+- Recent transactions.
+- High-cost categories.
+- Upcoming or unpaid obligations.
+
+Graph views may include:
+
+- Monthly income vs expense line chart.
+- Expense category pie or donut chart.
+- Bar chart by farm, field, crop, or season.
+- Payment status chart.
+- Approval status chart.
+- Profit/loss trend over time.
+
+Table views may include:
+
+- Recent expense entries.
+- Recent income entries.
+- Outstanding payments.
+- Pending approvals.
+- Category summary.
+- Monthly summary.
+- Farm summary.
+- Field summary.
+- Crop season summary.
+
+## 5.2 Multi-Farm Support
+
+The app must support multiple farms under one admin account.
+
+Farm records should include:
+
+- Farm name.
+- Location.
+- Owner or responsible person.
+- Active/inactive status.
+- Notes.
+
+Admin can manage all farms. Users can be assigned access to specific farm data.
+
+## 5.3 Field Management
+
+Each farm can contain multiple fields.
+
+Field records should include:
+
+- Field name.
+- Farm.
+- Area.
+- Area unit.
+- Soil type, optional.
+- Irrigation source, optional.
+- Notes.
+
+## 5.4 Crop Season Tracking
+
+The app should track crop seasons separately.
+
+Examples:
+
+- Wheat 2026
+- Rice 2026
+- Cotton Summer 2026
+
+Crop season records should include:
+
+- Crop name.
+- Season name.
+- Farm.
+- Field.
+- Start date.
+- Expected end date.
+- Actual end date.
+- Status.
+- Notes.
+
+Expenses and income should be linkable to a crop season.
+
+## 5.5 Expense Tracking
+
+The app should support expense entries for:
+
+- Land rental.
+- Water cost.
+- Water cost on hourly basis.
+- Outsourced land preparation.
+- Worker/labor wages.
+- Repairs.
+- Equipment maintenance.
+- Seeds.
+- Fertilizer.
+- Pesticides.
+- Fuel.
+- Transportation.
+- Harvesting.
+- Storage.
+- Miscellaneous costs.
+
+Each expense entry should capture:
+
+- Date.
+- Category.
+- Subcategory.
+- Farm.
+- Field, if applicable.
+- Crop season, if applicable.
+- Vendor, worker, or service provider.
+- Quantity or hours, if applicable.
+- Rate.
+- Total amount in INR.
+- Payment status.
+- Approval status.
+- Payment method.
+- Payment date.
+- Notes.
+- Receipt or attachment, planned future support.
+- Created by.
+- Last updated by.
+
+### 5.5.1 Water Cost
+
+For water cost on an hourly basis, the app should capture:
+
+- Water source.
+- Number of hours used.
+- Rate per hour in INR.
+- Total water cost.
+- Farm.
+- Field.
+- Crop season, if applicable.
+
+### 5.5.2 Labor Cost
+
+For labor and workers, the app should capture:
+
+- Worker name or group.
+- Work type.
+- Number of workers.
+- Hours or days worked.
+- Rate per hour or day in INR.
+- Total labor cost.
+- Payment status.
+- Approval status.
+
+### 5.5.3 Outsourced Work
+
+For outsourced work, the app should capture:
+
+- Service type, such as land preparation, plowing, leveling, spraying, or harvesting.
+- Contractor/vendor name.
+- Work date.
+- Rate.
+- Total amount in INR.
+- Payment details.
+- Approval status.
+
+## 5.6 Income Tracking
+
+The app should support income entries from:
+
+- Crop sales.
+- Livestock or byproduct sales, optional future support.
+- Subsidies.
+- Rental income.
+- Other farm-related income.
+
+Each income entry should capture:
+
+- Date.
+- Income category.
+- Crop or product.
+- Crop season, if applicable.
+- Quantity sold.
+- Unit price in INR.
+- Total income in INR.
+- Buyer name.
+- Payment status.
+- Approval status.
+- Payment method.
+- Payment date.
+- Notes.
+- Attachment or invoice, planned future support.
+- Created by.
+- Last updated by.
+
+## 5.7 Payment Tracking
+
+The app should allow tracking payment status for both expenses and income.
+
+Payment statuses:
+
+- Paid.
+- Unpaid.
+- Partially paid.
+- Overdue.
+- Cancelled or voided, if needed.
+
+Payment details should include:
+
+- Amount paid in INR.
+- Remaining amount in INR.
+- Payment date.
+- Payment method.
+- Reference number.
+- Notes.
+
+Operators should be able to update payment details where allowed.
+
+## 5.8 Approval Workflow
+
+Expenses and income should support approval before becoming final.
+
+Default flow:
+
+1. Operator creates an expense or income entry.
+2. Entry status becomes Pending Approval.
+3. Admin reviews the entry.
+4. Admin approves or rejects the entry.
+5. Approved entries become final and appear in finalized financial reports.
+6. Rejected entries remain visible for audit and correction history.
+
+Approval statuses:
+
+- Draft, optional.
+- Pending Approval.
+- Approved.
+- Rejected.
+- Archived.
+
+Admin-created records may be auto-approved or follow approval settings, depending on system configuration.
+
+Reports should clearly distinguish between approved financials and pending entries.
+
+## 5.9 Reporting
+
+The app should provide reports such as:
+
+- Monthly income and expense report.
+- Profit and loss report.
+- Expense by category report.
+- Income by crop report.
+- Farm-wise financial report.
+- Field-wise cost report.
+- Crop season-wise profitability report.
+- Worker/labor cost report.
+- Water usage and water cost report.
+- Outstanding payments report.
+- Pending approval report.
+- Vendor/contractor payment report.
+- Archived records report for Admin.
+
+Reports should support filters by:
+
+- Date range.
+- Farm.
+- Field.
+- Crop.
+- Crop season.
+- Category.
+- Payment status.
+- Approval status.
+- User/operator.
+- Vendor or worker.
+
+## 5.10 Export And PDF Support
+
+Users with permission should be able to export dashboard and report data.
+
+Supported exports:
+
+- PDF.
+- CSV.
+- Excel, optional.
+
+PDF export should include:
+
+- Report title.
+- Date range.
+- Summary metrics.
+- Charts where applicable.
+- Tabular details.
+- Generated date.
+- Generated by.
+- Farm/company name.
+- Currency as INR/₹.
+
+Users with view-only access can export their assigned reports and permitted data.
+
+## 5.11 Monthly Email Report
+
+The app should send a monthly report automatically by email.
+
+Monthly report should include:
+
+- Total income for the month.
+- Total expenses for the month.
+- Net profit/loss.
+- Pending approvals.
+- Pending payments.
+- Category-wise expense summary.
+- Farm-wise summary.
+- Crop season-wise summary.
+- Major cost items.
+- Income by crop/product.
+- Comparison with previous month.
+- Attached PDF report.
+
+Admin should be able to configure:
+
+- Report recipients.
+- Report schedule.
+- Report format.
+- Farms included.
+- Whether operators/users receive reports.
+
+Email is the only required channel for monthly reports in the initial version. WhatsApp/SMS can be considered later.
+
+## 5.12 Attachments
+
+The PRD should keep attachment support as a planned feature.
+
+Potential attachments:
+
+- Receipts.
+- Invoices.
+- Photos.
+- Supporting documents.
+
+This may be added after the MVP.
+
+## 5.13 User Management
+
+Admin should be able to:
+
+- Create users.
+- Assign roles.
+- Edit user details.
+- Lock user access.
+- Unlock user access.
+- Remove users.
+- Reset user access.
+- Assign users to specific farms, fields, crops, or data scopes.
+
+User fields:
+
+- Name.
+- Email or phone.
+- Role.
+- Status: active, locked, removed.
+- Assigned farms/fields.
+- Created date.
+- Last login.
+
+## 5.14 Access Control
+
+The app should enforce role-based permissions.
+
+Access should be limited by:
+
+- Role.
+- Assigned farm.
+- Assigned field.
+- Assigned crop or season.
+- Admin configuration.
+
+A user should only see data they are allowed to access.
+
+## 5.15 Archive Instead Of Delete
+
+Deleted records should be archived, not permanently removed.
+
+Archived records should remain available for audit purposes.
+
+When a record is archived, the system should capture:
+
+- Record type.
+- Record ID.
+- Archived by.
+- Archived date/time.
+- Archive reason, optional.
+- Original record data.
+- Restore history, if restored later.
+
+Admin should be able to view archived records and restore them if needed.
+
+## 5.16 Audit Log
+
+The system should track important actions.
+
+Audit log should capture:
+
+- User who performed action.
+- Action type.
+- Record affected.
+- Previous value, where useful.
+- New value, where useful.
+- Timestamp.
+
+Important actions:
+
+- User created.
+- User removed.
+- User locked/unlocked.
+- Expense added/updated/approved/rejected/archived/restored.
+- Income added/updated/approved/rejected/archived/restored.
+- Payment updated.
+- Report exported.
+- Monthly report sent.
+- Settings changed.
+
+## 5.17 Notifications
+
+The app should support notifications for:
+
+- Monthly report generated.
+- Payment overdue.
+- Pending approval.
+- Entry approved.
+- Entry rejected.
+- User locked/unlocked.
+- Large expense added.
+- Report export completed.
+- Failed monthly report delivery.
+
+Notification channels:
+
+- Email.
+- In-app notification.
+- SMS or WhatsApp, optional future enhancement.
+
+## 6. Data Model
+
+Main entities:
+
+- User.
+- Role.
+- Farm.
+- Field.
+- Crop.
+- Crop Season.
+- Expense.
+- Income.
+- Payment.
+- Category.
+- Vendor/Contractor.
+- Worker.
+- Attachment.
+- Report.
+- Monthly Report Schedule.
+- Audit Log.
+- Archive Record.
+
+## 7. Non-Functional Requirements
+
+### 7.1 Security
+
+- Role-based access control.
+- Secure login.
+- Password protection or OTP login.
+- Admin-only user management.
+- Data access restrictions by assigned scope.
+- Audit trail for sensitive actions.
+- Archived records must not be physically deleted by normal users.
+
+### 7.2 Performance
+
+- Dashboard should load quickly for normal farm data volumes.
+- Reports should support large date ranges.
+- Export generation should be reliable.
+
+### 7.3 Usability
+
+- Forms should be simple and fast for daily use.
+- Operators should be able to add expenses quickly from mobile or desktop.
+- Dashboard should be easy to understand.
+- Filters should be clear and practical.
+- INR formatting should be consistent everywhere.
+
+### 7.4 Reliability
+
+- Financial records should not be lost.
+- Exports should generate consistently.
+- Monthly reports should retry if delivery fails.
+- Audit and archive records should be durable.
+
+### 7.5 Compatibility
+
+- Web app should work on desktop and mobile browsers.
+- Mobile-friendly layouts are required for operators entering daily costs.
+
+## 8. Suggested Screens
+
+- Login screen.
+- Dashboard.
+- Farms management.
+- Fields management.
+- Crop seasons management.
+- Expenses list.
+- Add/Edit expense form.
+- Income list.
+- Add/Edit income form.
+- Approvals queue.
+- Payments view.
+- Reports view.
+- Export PDF preview.
+- Monthly report settings.
+- User management.
+- Role and access management.
+- Categories/settings.
+- Archived records.
+- Audit log.
+
+## 9. MVP Scope
+
+The first version should include:
+
+- Admin, Operator, and User roles.
+- Login and role-based access.
+- Multi-farm support.
+- Farm and field management.
+- Crop season tracking.
+- Expense tracking.
+- Income tracking.
+- Payment status tracking.
+- Approval workflow for expenses and income.
+- Dashboard with charts and tables.
+- PDF export.
+- CSV export.
+- User export permissions for assigned data.
+- Monthly report by email with PDF attachment.
+- User management for Admin.
+- Basic category setup.
+- INR-only currency support.
+- Archive instead of permanent delete.
+- Basic audit log.
+
+## 10. Future Enhancements
+
+Possible future features:
+
+- Mobile app.
+- Offline data entry.
+- Receipt scanning.
+- Attachment uploads for receipts, invoices, and photos.
+- WhatsApp monthly reports.
+- SMS notifications.
+- Budget planning.
+- Forecasting profit/loss.
+- Inventory tracking.
+- Equipment tracking.
+- Weather integration.
+- Crop yield tracking.
+- Multi-language support.
+- Bank/payment integration.
+- Excel export.
+
+## 11. Open Questions
+
+- Should admin-created entries be auto-approved by default?
+- Should rejected operator entries be editable and resubmitted?
+- Should crop season profitability include shared farm costs automatically or only directly assigned costs?
+- Should monthly reports include only approved records or also show pending entries separately?
+- Should exports include archived records for Admin-only reports?

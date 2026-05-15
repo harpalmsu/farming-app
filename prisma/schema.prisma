@@ -1,0 +1,180 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  OPERATOR
+  USER
+}
+
+enum UserStatus {
+  ACTIVE
+  LOCKED
+  REMOVED
+}
+
+enum PaymentStatus {
+  PAID
+  UNPAID
+  PARTIAL
+  OVERDUE
+  CANCELLED
+}
+
+enum ApprovalStatus {
+  DRAFT
+  PENDING_APPROVAL
+  APPROVED
+  REJECTED
+  ARCHIVED
+}
+
+enum EntryType {
+  EXPENSE
+  INCOME
+}
+
+enum CategoryType {
+  EXPENSE
+  INCOME
+}
+
+model Profile {
+  id             String     @id @default(cuid())
+  authUserId     String?    @unique
+  name           String
+  email          String     @unique
+  phone          String?
+  role           Role       @default(USER)
+  status         UserStatus @default(ACTIVE)
+  assignedFarmId String?
+  assignedFarm   Farm?      @relation(fields: [assignedFarmId], references: [id])
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  entries        LedgerEntry[] @relation("CreatedEntries")
+  auditLogs      AuditLog[]
+}
+
+model Farm {
+  id        String     @id @default(cuid())
+  name      String
+  location  String?
+  owner     String?
+  isActive  Boolean    @default(true)
+  notes     String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  fields    Field[]
+  seasons   CropSeason[]
+  entries   LedgerEntry[]
+  users     Profile[]
+}
+
+model Field {
+  id               String   @id @default(cuid())
+  name             String
+  farmId           String
+  farm             Farm     @relation(fields: [farmId], references: [id])
+  area             Decimal?
+  areaUnit         String?
+  soilType         String?
+  irrigationSource String?
+  notes            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  seasons          CropSeason[]
+  entries          LedgerEntry[]
+}
+
+model CropSeason {
+  id            String   @id @default(cuid())
+  cropName      String
+  seasonName    String
+  farmId        String
+  farm          Farm     @relation(fields: [farmId], references: [id])
+  fieldId       String?
+  field         Field?   @relation(fields: [fieldId], references: [id])
+  startDate     DateTime
+  expectedEndDate DateTime?
+  actualEndDate DateTime?
+  status        String   @default("Active")
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  entries       LedgerEntry[]
+}
+
+model Category {
+  id        String       @id @default(cuid())
+  name      String
+  type      CategoryType
+  isActive  Boolean      @default(true)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  entries   LedgerEntry[]
+}
+
+model LedgerEntry {
+  id              String         @id @default(cuid())
+  type            EntryType
+  date            DateTime
+  title           String
+  categoryId      String
+  category        Category       @relation(fields: [categoryId], references: [id])
+  subcategory     String?
+  farmId          String
+  farm            Farm           @relation(fields: [farmId], references: [id])
+  fieldId         String?
+  field           Field?         @relation(fields: [fieldId], references: [id])
+  cropSeasonId    String?
+  cropSeason      CropSeason?    @relation(fields: [cropSeasonId], references: [id])
+  partyName       String?
+  quantity        Decimal?
+  unit            String?
+  rate            Decimal?
+  amount          Decimal
+  amountPaid      Decimal        @default(0)
+  paymentStatus   PaymentStatus  @default(UNPAID)
+  approvalStatus  ApprovalStatus @default(PENDING_APPROVAL)
+  paymentMethod   String?
+  paymentDate     DateTime?
+  referenceNumber String?
+  notes           String?
+  createdById     String?
+  createdBy       Profile?       @relation("CreatedEntries", fields: [createdById], references: [id])
+  approvedById    String?
+  approvedAt      DateTime?
+  archivedById    String?
+  archivedAt      DateTime?
+  archiveReason   String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model MonthlyReportSchedule {
+  id          String   @id @default(cuid())
+  name        String
+  recipients  String[]
+  dayOfMonth  Int      @default(1)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  actor     Profile? @relation(fields: [actorId], references: [id])
+  action    String
+  entity    String
+  entityId  String?
+  before    Json?
+  after     Json?
+  createdAt DateTime @default(now())
+}
