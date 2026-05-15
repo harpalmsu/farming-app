@@ -2,6 +2,20 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+async function findOrCreateCategory(name: string, type: "EXPENSE" | "INCOME") {
+  const existing = await prisma.category.findFirst({
+    where: { name, type }
+  });
+
+  if (existing) {
+    return existing;
+  }
+
+  return prisma.category.create({
+    data: { name, type }
+  });
+}
+
 async function main() {
   const admin = await prisma.profile.upsert({
     where: { email: "admin@farm.local" },
@@ -55,13 +69,10 @@ async function main() {
     }
   });
 
-  const water = await prisma.category.create({
-    data: { name: "Water Cost", type: "EXPENSE" }
-  });
-
-  const cropSale = await prisma.category.create({
-    data: { name: "Crop Sale", type: "INCOME" }
-  });
+  const water = await findOrCreateCategory("Water Cost", "EXPENSE");
+  const cropSale = await findOrCreateCategory("Crop Sale", "INCOME");
+  await findOrCreateCategory("Water Income", "INCOME");
+  await findOrCreateCategory("Land Rental Income", "INCOME");
 
   await prisma.ledgerEntry.createMany({
     data: [

@@ -31,6 +31,8 @@ export const demoCategories: Category[] = [
   { id: "cat-repair", name: "Repairs", type: "EXPENSE" },
   { id: "cat-seeds", name: "Seeds", type: "EXPENSE" },
   { id: "cat-crop-sale", name: "Crop Sale", type: "INCOME" },
+  { id: "cat-water-income", name: "Water Income", type: "INCOME" },
+  { id: "cat-land-rental-income", name: "Land Rental Income", type: "INCOME" },
   { id: "cat-subsidy", name: "Subsidy", type: "INCOME" }
 ];
 
